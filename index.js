@@ -66,16 +66,18 @@ app.get('/autos', async (req, res) => {
  *                 type: string
  *               precio:
  *                 type: number
+ *               imagen:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Auto creado
  */
 app.post('/autos', async (req, res) => {
-  const { marca, modelo, anio, color, precio } = req.body;
+  const { marca, modelo, anio, color, precio, imagen } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO autos (marca, modelo, anio, color, precio) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [marca, modelo, anio, color, precio]
+      'INSERT INTO autos (marca, modelo, anio, color, precio, imagen) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [marca, modelo, anio, color, precio, imagen]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -112,17 +114,19 @@ app.post('/autos', async (req, res) => {
  *                 type: string
  *               precio:
  *                 type: number
+ *               imagen:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Auto actualizado
  */
 app.put('/autos/:id', async (req, res) => {
   const { id } = req.params;
-  const { marca, modelo, anio, color, precio } = req.body;
+  const { marca, modelo, anio, color, precio, imagen } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE autos SET marca=$1, modelo=$2, anio=$3, color=$4, precio=$5 WHERE id=$6 RETURNING *',
-      [marca, modelo, anio, color, precio, id]
+      'UPDATE autos SET marca=$1, modelo=$2, anio=$3, color=$4, precio=$5, imagen=$6 WHERE id=$7 RETURNING *',
+      [marca, modelo, anio, color, precio, imagen, id]
     );
     res.json(result.rows[0]);
   } catch (err) {
