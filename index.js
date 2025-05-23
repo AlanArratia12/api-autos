@@ -1,21 +1,39 @@
+const { swaggerUi, specs } = require('./swagger');
 const express = require('express');
 const { Pool } = require('pg');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-// Ruta raíz
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Página de inicio
+ *     responses:
+ *       200:
+ *         description: Mensaje de bienvenida
+ */
 app.get('/', (req, res) => {
   res.send('API de Autos funcionando 🚗');
 });
 
-// Obtener todos los autos
+/**
+ * @swagger
+ * /autos:
+ *   get:
+ *     summary: Obtener todos los autos
+ *     responses:
+ *       200:
+ *         description: Lista de autos
+ */
 app.get('/autos', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM autos');
@@ -26,7 +44,32 @@ app.get('/autos', async (req, res) => {
   }
 });
 
-// Agregar un auto
+/**
+ * @swagger
+ * /autos:
+ *   post:
+ *     summary: Agregar un auto
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               marca:
+ *                 type: string
+ *               modelo:
+ *                 type: string
+ *               anio:
+ *                 type: integer
+ *               color:
+ *                 type: string
+ *               precio:
+ *                 type: number
+ *     responses:
+ *       201:
+ *         description: Auto creado
+ */
 app.post('/autos', async (req, res) => {
   const { marca, modelo, anio, color, precio } = req.body;
   try {
@@ -41,7 +84,38 @@ app.post('/autos', async (req, res) => {
   }
 });
 
-// Actualizar auto completamente
+/**
+ * @swagger
+ * /autos/{id}:
+ *   put:
+ *     summary: Actualizar completamente un auto
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               marca:
+ *                 type: string
+ *               modelo:
+ *                 type: string
+ *               anio:
+ *                 type: integer
+ *               color:
+ *                 type: string
+ *               precio:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Auto actualizado
+ */
 app.put('/autos/:id', async (req, res) => {
   const { id } = req.params;
   const { marca, modelo, anio, color, precio } = req.body;
@@ -57,7 +131,28 @@ app.put('/autos/:id', async (req, res) => {
   }
 });
 
-// Actualizar parcialmente auto
+/**
+ * @swagger
+ * /autos/{id}:
+ *   patch:
+ *     summary: Actualizar parcialmente un auto
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *     responses:
+ *       200:
+ *         description: Auto parcialmente actualizado
+ */
 app.patch('/autos/:id', async (req, res) => {
   const { id } = req.params;
   const campos = Object.keys(req.body);
@@ -75,7 +170,21 @@ app.patch('/autos/:id', async (req, res) => {
   }
 });
 
-// Eliminar auto
+/**
+ * @swagger
+ * /autos/{id}:
+ *   delete:
+ *     summary: Eliminar un auto
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Auto eliminado
+ */
 app.delete('/autos/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -91,4 +200,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
 });
-
