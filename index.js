@@ -66,12 +66,13 @@ app.get('/autos/:id', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM autos WHERE id = $1', [id]);
     if (result.rows.length === 0) {
-      return res.status(404).send('Auto no encontrado');
+      res.status(404).send('Auto no encontrado');
+    } else {
+      res.json(result.rows[0]);
     }
-    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error al obtener el auto');
+    res.status(500).send('Error al obtener auto por ID');
   }
 });
 
