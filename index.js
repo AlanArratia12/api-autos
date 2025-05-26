@@ -46,6 +46,57 @@ app.get('/autos', async (req, res) => {
 
 /**
  * @swagger
+ * /autos/{id}:
+ *   get:
+ *     summary: Obtener un auto por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del auto a buscar
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Detalles del auto encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 marca:
+ *                   type: string
+ *                 modelo:
+ *                   type: string
+ *                 anio:
+ *                   type: integer
+ *                 color:
+ *                   type: string
+ *                 precio:
+ *                   type: number
+ *                 imagen:
+ *                   type: string
+ *       404:
+ *         description: Auto no encontrado
+ */
+app.get('/autos/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('SELECT * FROM autos WHERE id = $1', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).send('Auto no encontrado');
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error al obtener auto por ID');
+  }
+});
+
+/**
+ * @swagger
  * /autos:
  *   post:
  *     summary: Agregar un auto
