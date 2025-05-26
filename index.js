@@ -260,6 +260,29 @@ app.delete('/autos/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Auto:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         marca:
+ *           type: string
+ *         modelo:
+ *           type: string
+ *         anio:
+ *           type: integer
+ *         color:
+ *           type: string
+ *         precio:
+ *           type: number
+ *         imagen:
+ *           type: string
+ */
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
