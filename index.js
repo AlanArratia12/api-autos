@@ -210,7 +210,19 @@ app.put('/autos/:id', async (req, res) => {
  *         application/json:
  *           schema:
  *             type: object
- *             additionalProperties: true
+ *             properties:
+ *               marca:
+ *                 type: string
+ *               modelo:
+ *                 type: string
+ *               anio:
+ *                 type: integer
+ *               color:
+ *                 type: string
+ *               precio:
+ *                 type: number
+ *               imagen:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Auto parcialmente actualizado
