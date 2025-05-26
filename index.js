@@ -53,31 +53,11 @@ app.get('/autos', async (req, res) => {
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del auto a buscar
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: Detalles del auto encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                 marca:
- *                   type: string
- *                 modelo:
- *                   type: string
- *                 anio:
- *                   type: integer
- *                 color:
- *                   type: string
- *                 precio:
- *                   type: number
- *                 imagen:
- *                   type: string
+ *         description: Auto encontrado
  *       404:
  *         description: Auto no encontrado
  */
@@ -91,7 +71,7 @@ app.get('/autos/:id', async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error al obtener auto por ID');
+    res.status(500).send('Error al obtener el auto');
   }
 });
 
