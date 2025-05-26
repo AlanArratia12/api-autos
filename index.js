@@ -14,8 +14,17 @@ const pool = new Pool({
 
 /**
  * @swagger
+ * tags:
+ *   - name: autos
+ *     description: Operaciones relacionadas con el catálogo de autos
+ */
+
+/**
+ * @swagger
  * /:
  *   get:
+ *     tags:
+ *       - autos
  *     summary: Página de inicio
  *     responses:
  *       200:
@@ -29,10 +38,19 @@ app.get('/', (req, res) => {
  * @swagger
  * /autos:
  *   get:
+ *     tags:
+ *       - autos
  *     summary: Obtener todos los autos
+ *     description: Devuelve un arreglo de autos
  *     responses:
  *       200:
  *         description: Lista de autos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
  */
 app.get('/autos', async (req, res) => {
   try {
@@ -48,6 +66,8 @@ app.get('/autos', async (req, res) => {
  * @swagger
  * /autos/{id}:
  *   get:
+ *     tags:
+ *       - autos
  *     summary: Obtener un auto por ID
  *     parameters:
  *       - in: path
@@ -80,6 +100,8 @@ app.get('/autos/:id', async (req, res) => {
  * @swagger
  * /autos:
  *   post:
+ *     tags:
+ *       - autos
  *     summary: Agregar un auto
  *     requestBody:
  *       required: true
@@ -122,6 +144,8 @@ app.post('/autos', async (req, res) => {
  * @swagger
  * /autos/{id}:
  *   put:
+ *     tags:
+ *       - autos
  *     summary: Actualizar completamente un auto
  *     parameters:
  *       - in: path
@@ -171,6 +195,8 @@ app.put('/autos/:id', async (req, res) => {
  * @swagger
  * /autos/{id}:
  *   patch:
+ *     tags:
+ *       - autos
  *     summary: Actualizar parcialmente un auto
  *     parameters:
  *       - in: path
@@ -210,6 +236,8 @@ app.patch('/autos/:id', async (req, res) => {
  * @swagger
  * /autos/{id}:
  *   delete:
+ *     tags:
+ *       - autos
  *     summary: Eliminar un auto
  *     parameters:
  *       - in: path
